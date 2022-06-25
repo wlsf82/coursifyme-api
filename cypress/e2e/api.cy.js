@@ -1,6 +1,8 @@
 describe('API testing using cy.exec()', () => {
+  const curlBaseCommand = `curl -H "Authorization: ${Cypress.env('AUTHORIZATION_TOKEN')}" -H "Content-Type: application/json" https://api.coursify.me/v1/courses`
+
   it('GET /courses', () => {
-    cy.exec(`curl -H "Authorization: ${Cypress.env('AUTHORIZATION_TOKEN')}" -H "Content-Type: application/json" https://api.coursify.me/v1/courses`)
+    cy.exec(curlBaseCommand)
       .should(({ stdout }) => {
         const obj = JSON.parse(stdout)
         const { data } = obj
@@ -20,7 +22,7 @@ describe('API testing using cy.exec()', () => {
   
   context('GET /courses/:id', () => {
     it('GET free course', () => {
-      cy.exec(`curl -H "Authorization: ${Cypress.env('AUTHORIZATION_TOKEN')}" -H "Content-Type: application/json" https://api.coursify.me/v1/courses/${Cypress.env('FREE_COURSE_ID')}`)
+      cy.exec(`${curlBaseCommand}/${Cypress.env('FREE_COURSE_ID')}`)
         .should(({ stdout }) => {
           const obj = JSON.parse(stdout)
           const { data } = obj
@@ -30,7 +32,7 @@ describe('API testing using cy.exec()', () => {
     })
 
     it('GET paid course', () => {
-      cy.exec(`curl -H "Authorization: ${Cypress.env('AUTHORIZATION_TOKEN')}" -H "Content-Type: application/json" https://api.coursify.me/v1/courses/${Cypress.env('PAID_COURSE_ID')}`)
+      cy.exec(`${curlBaseCommand}/${Cypress.env('PAID_COURSE_ID')}`)
         .should(({ stdout }) => {
           const obj = JSON.parse(stdout)
           const { data } = obj
