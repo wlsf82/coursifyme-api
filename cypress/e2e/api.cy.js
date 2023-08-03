@@ -6,16 +6,21 @@ describe('API testing using cy.exec()', () => {
       .should(({ stdout }) => {
         const obj = JSON.parse(stdout)
         const { data } = obj
-        expect(data.length).to.eq(7)
+        expect(data.length).to.eq(8)
         data.forEach(item => {
           const {
             currency_symbol,
             is_active,
-            is_archived
+            is_archived,
+            name
           } = item
           expect(currency_symbol).to.eq('R$')
-          expect(is_active).to.eq(true)
           expect(is_archived).to.eq(false)
+          if (name !== 'Boas práticas com Cypress') {
+            expect(is_active).to.eq(true)
+          } else {
+            expect(is_active).to.eq(false)
+          }
         })
       })
   })
